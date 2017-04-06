@@ -1,10 +1,9 @@
 package pl.lantkowiak.plagdetector.algorithm.tokenizer.lexer
 
-import org.antlr.v4.runtime.Lexer
-import org.antlr.v4.runtime.CharStream
-import pl.lantkowiak.plagdetector.algorithm.grammar.Java8Lexer
 import org.antlr.v4.runtime.CharStreams
+import org.assertj.core.api.Assertions
 import org.junit.Test
+import pl.lantkowiak.plagdetector.algorithm.grammar.Java8Lexer
 
 class LexerFactoryTest {
 	val lexerFactory: LexerFactory = LexerFactory();
@@ -17,11 +16,6 @@ class LexerFactoryTest {
 		val result = lexerFactory.getLexer(LexerType.JAVA_8, CharStreams.fromString(""))
 
 		// then
-		System.out.println("result " + result)
+		Assertions.assertThat(result).isInstanceOf(Java8Lexer::class.java)
 	}
-//	fun getLexer(type: LexerType, cs: CharStream): Lexer {
-//		when (type) {
-//			LexerType.JAVA_8 -> return Java8Lexer(cs)
-//		}
-//	}
 }
