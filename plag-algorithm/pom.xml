@@ -10,6 +10,7 @@
 
     <properties>
         <kotlin.version>1.1.1</kotlin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -96,6 +97,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>add-source</id>
@@ -118,6 +120,7 @@
                 <executions>
                     <execution>
                         <id>compile</id>
+                        <!--<phase>process-sources</phase>-->
                         <goals>
                             <goal>compile</goal>
                         </goals>
