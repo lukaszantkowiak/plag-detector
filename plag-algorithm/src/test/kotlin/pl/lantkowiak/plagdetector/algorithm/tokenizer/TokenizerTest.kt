@@ -6,11 +6,11 @@ import pl.lantkowiak.plagdetector.algorithm.tokenizer.lexer.LexerType
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class TokenizerImplTest {
+class TokenizerTest {
     private val INPUT_FILE = "tokenizer/HelloWorld.java"
     private val RESULT_FILE = "tokenizer/result.txt"
 
-    private val tokenizer: TokenizerImpl = TokenizerImpl()
+    private val tokenizer = Tokenizer()
 
     @Test
     fun tokenize_should_tokenizeCode_when_passed() {
