@@ -1,0 +1,154 @@
+class ZaMalaLiczba extends Exception {};
+class ZaDuzaLiczba extends Exception {};
+
+class RozkladLiczby
+{
+	private int[] tab; // tablica najmniejszych dzielnikow
+	private int size;
+
+	RozkladLiczby(int n) throws ZaMalaLiczba
+	{
+		if (n < 2)
+			throw new ZaMalaLiczba();
+
+		/* rozsadnie dobieramy czynnik, aby nie zuzywac zbyt
+		 * wiele pamieci na stercie */
+		if (n > 10000000)
+			n = 10000000;
+
+		tab = new int[n+1];
+		tab[1] = 1;
+		for (int i=2; i<=n; i++)
+			if (tab[i] == 0)
+				for (int j=i; j<=n; j+=i)
+					tab[j] = i;
+		size = n;
+	}
+
+	/* logarytm dwojkowy (dla n > 0) */
+	private static int lg(int n)
+	{
+		int res = 0;
+		while (n > 0)
+		{
+			n >>= 1;
+			res++;
+		}
+		return res-1;
+	}
+	int[] czynnikiPierwsze(int m) throws ZaMalaLiczba, ZaDuzaLiczba
+	{
+		int[] res;
+		int counter = 0;
+
+		if (m == 1)
+		{
+			int []res2 = new int[1];
+			res2[0] = 1;
+			return res2;
+		}
+		if (m < 1)
+			throw new ZaMalaLiczba();
+		else if (m > size)
+			throw new ZaDuzaLiczba();
+
+		// res = new int[m/2]; // to jest bardzo grube oszacowanie :)
+		res = new int[lg(m)];
+
+		while (tab[m] > 1)
+		{
+			res[counter] = tab[m];
+			m /= tab[m];
+			counter++;
+		}
+
+		int[] res2 = new int[counter];
+		for (int i=0; i<counter; i++)
+		{
+			res2[i] = res[i];
+		}
+		return res2;
+	}
+}
+
+
+public class RozkladLiczbyTest
+{
+	static public void main(String[] args)
+	{
+		RozkladLiczby rozklad;
+		int max = 0;
+
+		/* szukamy maksimum */
+		for (int p=0; p<args.length; p++)
+		{
+			int n;
+			try
+			{
+				n = Integer.parseInt(args[p]);
+			}
+			catch (NumberFormatException ex)
+			{
+				continue;
+			}
+			if (n > max)
+				max = n;
+		}
+
+		/* unikamy glupich danych */
+		if (max < 2)
+			max = 2;
+
+		try
+		{
+			rozklad = new RozkladLiczby(max);
+		}
+		catch (Exception e)
+		{
+			/* obysmy nigdy tu nie wpadli */
+			System.out.println("Nie mamy co liczyc");
+			return;
+		}
+
+		/* zabieramy sie do roboty */
+		for (int p=0; p<args.length; p++)
+		{
+			int n;
+			int[] t;
+			try
+			{
+				n = Integer.parseInt(args[p]);
+			}
+			catch (NumberFormatException ex)
+			{
+				System.out.println(args[p] +
+					" nie jest liczba");
+				continue;
+			}
+
+			try
+			{
+				t = rozklad.czynnikiPierwsze(n);
+			}
+			catch (ZaMalaLiczba e)
+			{
+				System.out.println(args[p] +
+					" jest za mala");
+				continue;
+			}
+			catch (ZaDuzaLiczba e)
+			{
+				System.out.println(args[p] +
+					" jest za duza");
+				continue;
+			}
+
+			/* wypisz rozklad liczby na czynniki pierwsze */
+			System.out.print(t[0]);
+			for (int i=1; i<t.length; i++)
+				System.out.print("*"+t[i]);
+			System.out.println();
+
+		}
+	}
+}

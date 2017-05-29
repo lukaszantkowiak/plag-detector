@@ -1,0 +1,118 @@
+class ZaMala extends Exception {};
+class ZaDuza extends Exception {};
+
+
+class SitoErastotenesa
+{
+	private boolean tab[]; // tablica negacji wynikow
+	private int rozm;
+
+	public boolean prime (int m) throws ZaMala, ZaDuza
+	{
+		if (m < 2)
+			throw new ZaMala();
+		else if (m > rozm)
+			throw new ZaDuza();
+		return !tab[m];
+	}
+
+	SitoErastotenesa(int n) throws ZaMala
+	{
+		if (n < 2)
+			throw new ZaMala();
+
+		if (n > 1000000)
+			n = 1000000;
+
+		tab = new boolean[n+1];
+		int gr = (int)Math.sqrt(n);
+		for (int i=2; i<=gr; i++)
+		{
+			if (!tab[i])
+			{
+				for (int j=2*i; j<=n; j+=i)
+				{
+					tab[j] = true;
+				}
+			}
+		}
+		rozm = n;
+	}
+}
+
+public class SitoErastotenesaTest
+{
+	public static void main(String[] args)
+	{
+		SitoErastotenesa sito;
+		int max = 0;
+
+		//szukamy maksimum
+		for (int p=0; p<args.length; p++)
+		{
+			int n;
+			try
+			{
+				n = Integer.parseInt(args[p]);
+			}
+			catch (NumberFormatException ex)
+			{
+				continue;
+			}
+			if (n > max)
+				max = n;
+		}
+
+		//unikniecie minusowych danych
+		if (max < 2)
+			max = 2;
+
+		try
+		{
+			sito = new SitoErastotenesa(max);
+		}
+		catch (Exception e)
+		{
+			//wyjatek w przpadku  bledu przypisania
+			System.out.println("Nie mamy co liczyc");
+			return;
+		}
+
+		//czewsc glowna
+		for (int p=0; p<args.length; p++)
+		{
+			int n;
+			try
+			{
+				n = Integer.parseInt(args[p]);
+			}
+			catch (NumberFormatException ex)
+			{
+				System.out.println(args[p] +
+					" nie jest liczba");
+				continue;
+			}
+			try
+			{
+				if (sito.prime(n))
+					System.out.println(args[p] + " jest liczba pierwsza");
+				else
+					System.out.println(args[p] + " nie jest liczba pierwsza");
+			}
+			catch (ZaMala e)
+			{
+				System.out.println(args[p] + " jest za mala");
+				continue;
+			}
+			catch (ZaDuza e)
+			{
+				System.out.println(args[p] + " jest za duza");
+				continue;
+			}
+
+
+		}
+		
+		return;
+	}
+}

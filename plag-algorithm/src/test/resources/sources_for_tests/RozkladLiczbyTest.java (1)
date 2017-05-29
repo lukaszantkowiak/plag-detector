@@ -1,0 +1,139 @@
+class ZaMala extends Exception {};
+class ZaDuza extends Exception {};
+
+class RozkladLiczby
+{
+	private int dziel[]; // tablica najmniejszych dzielnikow
+	private int size;
+
+	RozkladLiczby(int n) throws ZaMala
+	{
+		if (n < 2)
+			throw new ZaMala();
+
+		if (n > 1000000)
+			n = 1000000;
+
+		dziel = new int[n+1];
+		dziel[1] = 1;
+		for (int i=2; i<=n; i++)
+			if (dziel[i] == 0)
+				for (int j=i; j<=n; j+=i)
+					dziel[j] = i;
+		size = n;
+	}
+
+	
+	int[] czynnikiPierwsze(int m) throws ZaMala, ZaDuza
+	{
+		int res[];
+		int licz = 0;
+
+		if (m == 1)
+		{
+			int []res2 = new int[1];
+			res2[0] = 1;
+			return res2;
+		}
+		if (m < 1)
+			throw new ZaMala();
+		else if (m > size)
+			throw new ZaDuza();
+
+		res = new int[m/2]; // oszacowanie
+
+		while (dziel[m] > 1)
+		{
+			res[licz] = dziel[m];
+			m /= dziel[m];
+			licz++;
+		}
+
+		int res2[] = new int[licz];
+		for (int i=0; i<licz; i++)
+		{
+			res2[i] = res[i];
+		}
+		return res2;
+	}
+}
+
+public class RozkladLiczbyTest
+{
+	static public void main(String args[])
+	{
+		RozkladLiczby rozklad;
+		int max = 0;
+
+		//szukamy max
+		for (int p=0; p<args.length; p++)
+		{
+			int n;
+			try
+			{
+				n = Integer.parseInt(args[p]);
+			}
+			catch (NumberFormatException ex)
+			{
+				continue;
+			}
+			if (n > max)
+				max = n;
+		}
+
+		//unikamy ujemnych danych
+		if (max < 2)
+			max = 2;
+
+		try
+		{
+			rozklad = new RozkladLiczby(max);
+		}
+		catch (Exception e)
+		{
+			//nie mamy co liczyc przy ledzie przypisania
+			System.out.println("Nie mamy co liczyc");
+			return;
+		}
+
+		//czesc glowna
+		for (int p=0; p<args.length; p++)
+		{
+			int n;
+			int[] t;
+			try
+			{
+				n = Integer.parseInt(args[p]);
+			}
+			catch (NumberFormatException ex)
+			{
+				System.out.println(args[p] +
+					" nie jest liczba");
+				continue;
+			}
+
+			try
+			{
+				t = rozklad.czynnikiPierwsze(n);
+			}
+			catch (ZaMala e)
+			{
+				System.out.println(args[p] + " jest za mala");
+				continue;
+			}
+			catch (ZaDuza e)
+			{
+				System.out.println(args[p] + " jest za duza");
+				continue;
+			}
+
+
+			//wypisanie czynnikow
+			System.out.print(n + " = " +t[0]);
+			for (int i=1; i<t.length; i++)
+				System.out.print("*"+t[i]);
+			System.out.println();
+
+		}
+	}
+}

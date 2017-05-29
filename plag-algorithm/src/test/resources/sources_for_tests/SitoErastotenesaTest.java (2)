@@ -1,0 +1,121 @@
+class ZaMalaLiczba extends Exception {};
+class ZaDuzaLiczba extends Exception {};
+
+class SitoErastotenesa
+{
+	private boolean[] notp; // tablica negacji wynikow
+	private int size;
+
+	public boolean prime (int m) throws ZaMalaLiczba, ZaDuzaLiczba
+	{
+		if (m < 2)
+			throw new ZaMalaLiczba();
+		else if (m > size)
+			throw new ZaDuzaLiczba();
+		return !notp[m];
+	}
+
+	SitoErastotenesa(int n) throws ZaMalaLiczba
+	{
+		if (n < 2)
+			throw new ZaMalaLiczba();
+
+		/* rozsadnie dobieramy czynnik, aby nie zuzywac zbyt
+		 * wiele pamieci na stercie */
+		if (n > 50000000)
+			n = 50000000;
+
+		notp = new boolean[n+1];
+		int gr = (int)Math.sqrt(n);
+		for (int i=2; i<=gr; i++)
+		{
+			if (!notp[i])
+			{
+				for (int j=2*i; j<=n; j+=i)
+				{
+					notp[j] = true;
+				}
+			}
+		}
+		size = n;
+	}
+}
+
+public class SitoErastotenesaTest
+{
+	public static void main(String[] args)
+	{
+		SitoErastotenesa sito;
+		int max = 0;
+
+		/* szukamy maksimum */
+		for (int p=0; p<args.length; p++)
+		{
+			int n;
+			try
+			{
+				n = Integer.parseInt(args[p]);
+			}
+			catch (NumberFormatException ex)
+			{
+				continue;
+			}
+			if (n > max)
+				max = n;
+		}
+
+		/* unikamy glupich danych */
+		if (max < 2)
+			max = 2;
+
+		try
+		{
+			sito = new SitoErastotenesa(max);
+		}
+		catch (Exception e)
+		{
+			/* obysmy nigdy tu nie wpadli */
+			System.out.println("Nie mamy co liczyc");
+			return;
+		}
+
+		/* zabieramy sie do pracy */
+		for (int p=0; p<args.length; p++)
+		{
+			int n;
+			try
+			{
+				n = Integer.parseInt(args[p]);
+			}
+			catch (NumberFormatException ex)
+			{
+				System.out.println(args[p] +
+					" nie jest liczba");
+				continue;
+			}
+			try
+			{
+				if (sito.prime(n))
+					System.out.println(args[p] +
+						" jest liczba pierwsza");
+				else
+					System.out.println(args[p] +
+						" nie jest liczba pierwsza");
+			}
+			catch (ZaMalaLiczba e)
+			{
+				System.out.println(args[p] +
+					" jest za mala");
+				continue;
+			}
+			catch (ZaDuzaLiczba e)
+			{
+				System.out.println(args[p] +
+					" jest za duza");
+				continue;
+			}
+		}
+		
+		return;
+	}
+}

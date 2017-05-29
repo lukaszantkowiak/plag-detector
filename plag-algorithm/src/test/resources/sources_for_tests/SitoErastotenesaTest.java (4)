@@ -1,0 +1,56 @@
+    public class SitoErastotenesa{
+       private boolean sito[];
+
+       //Konstruktor:
+       SitoErastotenesa(int n){
+          sito = new boolean[n];
+          double Msqrt = Math.sqrt(n);
+          int length = sito.length, sqrt;
+          sqrt = (int)Msqrt;
+          
+          for(int i = 0; i < length; i++)
+             sito[i] = true;
+          sito[0] = false; //skreslamy
+          for(int i = 2; i <= sqrt; i++){
+             if(sito[i - 1] == true){
+                for(int j = 2; i * j <= n; j++)
+                   sito[i * j - 1] = false; //skreslamy
+             }
+          }
+       }
+
+       public boolean prime(int m){
+          return sito[m - 1];
+          
+       }
+    }
+
+    public class SitoErastotenesaTest{
+       public static void main(String[] args){
+          int n = 0;
+          int k = 0;
+          for(int i = 0; i < args.length; i++){
+             try{k = Integer.parseInt(args[i]);
+                if(k > n) n = k;
+             }
+             catch(NumberFormatException ex){}
+          }
+
+          SitoErastotenesa a = new SitoErastotenesa(n);
+          
+          for(int i = 0; i < args.length; i++){
+             try {k = Integer.parseInt(args[i]);
+                if(k <= 0)
+                   System.out.println(args[i] + " - liczba niedodatnia");
+                else if(a.prime(k) == true)
+                          System.out.println(args[i] + " - liczba pierwsza");
+                      else
+                   System.out.println(args[i] + " - liczba zlozona");
+             }
+              catch (NumberFormatException ex) {
+                System.out.println(args[i] + " to nie jest liczba calkowita!");
+             }
+          }
+       }
+    }   
+

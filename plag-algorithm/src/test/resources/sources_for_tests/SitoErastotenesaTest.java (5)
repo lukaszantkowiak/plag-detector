@@ -1,0 +1,66 @@
+class MyException extends Exception{}
+
+class SitoErastotenesa{
+	private boolean sito[]; // pole klasy
+
+	//Konstruktor:
+	SitoErastotenesa(int n) throws MyException{
+		if(n > 16000000)
+			throw new MyException();
+		sito = new boolean[n];
+		double Msqrt = Math.sqrt(n);
+		int length = sito.length, sqrt;
+		sqrt = (int)Msqrt;
+		
+		for(int i = 0; i < length; i++)
+			sito[i] = true;
+		sito[0] = false;
+		for(int i = 2; i <= sqrt; i++){
+			if(sito[i - 1] == true){
+				for(int j = 2; i * j <= n; j++)
+					sito[i * j - 1] = false;
+			}
+		}
+	}
+
+	// Metoda sprawdzajaca czy podana liczba n jest pierwsza
+	public boolean prime(int k) throws MyException{
+		if(k < 2 || k > 16000000)
+			throw new MyException();
+		else return sito[k - 1];
+	}
+}
+
+public class SitoErastotenesaTest{
+	public static void main(String[] args){
+		int n = 0;
+		int k = 0;
+		for(int i = 0; i < args.length; i++){
+			try{k = Integer.parseInt(args[i]);
+				if(k > n && k < 16000000) n = k;
+			}
+			catch(NumberFormatException ex){}
+		}
+		int i = 0;
+		SitoErastotenesa a;
+		try{a = new SitoErastotenesa(n);
+			for(i = 0; i < args.length; i++){
+				try{k = Integer.parseInt(args[i]);
+					if(a.prime(k))
+		       				System.out.println(args[i] + " jest liczba pierwsza");
+		      			else
+						System.out.println(args[i] + " nie jest liczba pierwsza");
+					}
+	 			catch (NumberFormatException ex) {
+					System.out.println(args[i] + " NIE JEST LICZBA  !!!!");
+				}
+				catch (MyException e) {
+					System.out.println(args[i] + " NIE JEST LICZBA NATURALNA LUB JEST ZBYT DUZA");
+				}
+			}
+		}
+		catch (MyException e) {
+			System.out.println(n + " NIE JEST LICZBA NATURALNA");
+		}
+	}
+}

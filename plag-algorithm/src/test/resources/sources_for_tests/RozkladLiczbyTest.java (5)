@@ -1,0 +1,74 @@
+class MyException extends Exception{ }
+
+class RozkladLiczby{
+	private	int sito[];
+	public int czynniki[];
+
+	//Konstruktor:
+	RozkladLiczby(int n){
+		sito = new int[n];
+		for(int i = 0; i < n; i++)
+			sito[i] = 1;
+		for(int i = 2; i <= n; i++){
+			if(sito[i - 1] == 1)
+				for(int j = 1; j * i <= n; j++)
+					if(sito[(i * j) - 1] == 1)
+						sito[i * j - 1] = i;	
+		}
+	}
+	
+	public int[] czynnikiPierwsze(int m) throws MyException{
+		if(m < 2 || m > 15000000)
+			throw new MyException();
+		int i = m, j = 0;
+		while(i > 1){
+			i = i / sito[i - 1];
+			j++;
+		}
+		czynniki = new int[j];
+		i = m;
+		j = 0;
+		while(i > 1){
+			czynniki[j] = sito[i - 1];
+			i = i / sito[i -1];
+			j++;
+		}
+		return czynniki;
+	}
+}
+
+
+public class RozkladLiczbyTest{
+	public static void main(String[] args){
+		// max - najwieksza z wprowadzonych jako argumenty programu liczb
+		int n = 0, max = 0;
+		for(int i = 0; i < args.length; i++){
+			try{max = Integer.parseInt(args[i]);
+				if(n < max && max <= 15000000)
+					n = max;
+			}
+			catch(NumberFormatException ex){}
+		}
+		//Zainicjowanie konstruktora, ktory stworzy zmodyfikowane Sito dla liczb od 2 do n
+		RozkladLiczby a = new RozkladLiczby(n);
+	
+		n = 0;	
+		for(int i = 0; i < args.length; i++){
+			try{n = Integer.parseInt(args[i]);
+				a.czynnikiPierwsze(n);
+				if(a.czynniki.length == 1)
+					System.out.println(args[i] + " = " + a.czynniki[0]);
+				else{
+					System.out.printf(args[i] + " = " + a.czynniki[0]);
+					for(int j = 1; j < a.czynniki.length; j++)
+						System.out.printf("*" + a.czynniki[j]);
+					System.out.println();
+				}
+			}
+			catch(NumberFormatException ex){
+				System.out.println(args[i] + "  TO NIE LICZBA");}
+			catch(MyException e){
+				System.out.println(args[i] + " PODANA LICZBA JEST < 2 LUB ZBYT DUZA");}
+		}
+	}
+}

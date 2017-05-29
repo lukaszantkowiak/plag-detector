@@ -1,0 +1,84 @@
+class SitoErastotenesa
+{
+	private boolean[] nums;
+	private int size;
+
+	public boolean prime (int m)
+	{
+		if (m < 2) throw new Exception("Podana liczba jest za mala.");
+		else if (m > size) throw new Exception("Podana liczba jest za duza.");
+		return nums[m];
+	}
+
+	SitoErastotenesa (int n)
+	{
+		if (n < 2) throw new Exception("Podana liczba jest za mala.");
+		if (n > 100000) n = 100000;		
+
+		nums = new boolean[n+1];
+		for (int i=0; i<=n; i++) nums[i] = true;
+		
+		int pierw = (int)Math.sqrt(n);
+		for (int i=2; i<=pierw; i++)
+		{
+			for (int j=i*2; j<=n; j+=i) nums[j] = false;
+		}
+		size = n;
+	}
+}
+
+public class SitoErastotenesaTest
+{
+	public static void main(String[] args)
+	{
+		SitoErastotenesa sitko;
+		int max = 2;
+		int liczba;
+
+		for (int i=0; i<args.length; i++)
+		{			
+			try
+			{
+				liczba = Integer.parseInt(args[i]);
+			}
+			catch (NumberFormatException ex) {}
+
+			if (liczba > max) max = liczba;
+		}
+
+		try
+		{
+			sitko = new SitoErastotenesa(max);
+		}
+		catch (Exception e)
+		{
+			System.out.println("Wystapil blad: " + e.getMessage());
+			return;
+		}
+
+		for (int i=0; i<args.length; i++)
+		{
+			try
+			{
+				liczba = Integer.parseInt(args[i]);
+			}
+			catch (NumberFormatException ex)
+			{
+				System.out.println(args[i] + " nie jest liczba.");
+			}
+			
+			try
+			{
+				if (sitko.prime(n)) System.out.println(args[p] + " jest liczba pierwsza.");
+				else System.out.println(args[p] + " nie jest liczba pierwsza.");
+			}
+			catch (Exception e)
+			{
+				System.out.println("Wystapil blad: " + e.getMessage());
+				return false;
+			}
+		}
+		
+		return;
+	}
+}
