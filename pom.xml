@@ -7,5 +7,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>plag-algorithm</module>
+		<module>plag-api</module>
 	</modules>
 </project>
