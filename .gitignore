@@ -1,4 +1,6 @@
+# intelij files
 .idea/
-plag-algorithm/plag-algorithm.iml
-plag-algorithm/target/
-plag-detector.iml
+**/*.iml
+
+# compiled files
+**/target/
