@@ -6,14 +6,12 @@ import org.junit.Test
 import pl.lantkowiak.plagdetector.algorithm.grammar.Java8Lexer
 
 class LexerFactoryTest {
-	val lexerFactory: LexerFactory = LexerFactory();
-
 	@Test
 	fun getLexer_should_returnJava8Lexer_when_Java8TypeIsPassed() {
 		// given
 
 		// when
-		val result = lexerFactory.getLexer(LexerType.JAVA_8, CharStreams.fromString(""))
+		val result = LexerFactory.getLexer(LexerType.JAVA_8, CharStreams.fromString(""))
 
 		// then
 		Assertions.assertThat(result).isInstanceOf(Java8Lexer::class.java)

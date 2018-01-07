@@ -12,7 +12,7 @@ class PlagDetectorAlgorithm {
     private val compressor = Compressor<Int>()
     private val kolmogorovCalculator = KolmogorovCalculator()
 
-    public fun calculate(lexerType: LexerType, data1: String, data2: String): KolmogorovCalculationResult {
+    fun calculate(lexerType: LexerType, data1: String, data2: String): KolmogorovCalculationResult {
         val tokenizedData1 = this.tokenizer.tokenize(lexerType, data1);
         val tokenizedData2 = this.tokenizer.tokenize(lexerType, data2);
         val tokenizedData1_2 = mutableListOf<Int>();

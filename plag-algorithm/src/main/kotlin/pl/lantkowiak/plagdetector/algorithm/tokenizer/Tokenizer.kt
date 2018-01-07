@@ -6,7 +6,7 @@ import pl.lantkowiak.plagdetector.algorithm.tokenizer.lexer.LexerType
 
 class Tokenizer {
     fun tokenize(lexerType: LexerType, input: String): List<Int> {
-        val lexer = LexerFactory().getLexer(lexerType, CharStreams.fromString(input))
+        val lexer = LexerFactory.getLexer(lexerType, CharStreams.fromString(input))
 
         return lexer.allTokens.map { t -> t.type }
     }
