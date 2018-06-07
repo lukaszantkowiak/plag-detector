@@ -4,17 +4,17 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class CompressorTest {
-    private val INPUT = "ababcbababaaaaaa"
+    private val input = "ababcbababaaaaaa"
 
     private val compressor = Compressor<String>()
 
     @Test
     fun encode() {
         // given
-        val input = prepareInput(INPUT)
+        val input = prepareInput(input)
 
         // when
-        val result = compressor.encode(input);
+        val result = compressor.encode(input)
 
         // then
         val expected = mutableListOf<CodedTriple<String>>()
@@ -24,7 +24,7 @@ class CompressorTest {
         expected.add(CodedTriple(4, 3, "a"))
         expected.add(CodedTriple(2, 3, "a"))
         expected.add(CodedTriple(3, 2, "a"))
-        assertThat(result).isEqualTo(expected);
+        assertThat(result).isEqualTo(expected)
     }
 
     private fun prepareInput(inputString: String): List<String> {
